@@ -1,0 +1,103 @@
+{
+    "1": {
+        "id": 1,
+        "title": "The Holiday Survival Trio",
+        "script": "VISUAL: A clean, deep burgundy background. Three cookies are arranged in a dynamic, diagonal line, looking hyper-realistic and delicious. They are: 'The Peppermint Comet' (a dark chocolate cookie with peppermint shards), 'Gingerbread Ragnarok' (a gingerbread man with defiant icing details), and 'The White Chocolate Avalanche' (a thick cookie overloaded with white chocolate chunks). \n\nTEXT (Header, elegant serif font): The End of Boring Holidays is Nigh. \n\nTEXT (Sub-header, smaller sans-serif font below the cookies): Our limited edition Holiday Survival Trio has landed. \n\nLOGO: Doughpocalypse Bakery logo sits cleanly at the bottom.",
+        "tagline": "Survive the season in style.",
+        "product": "Doughpocalypse Bakery",
+        "size": "1080x1080"
+    },
+    "2": {
+        "id": 2,
+        "title": "The Naughty & Nice List",
+        "script": "VISUAL: A minimalist, cream-colored background. The poster is split by a very thin, playful red ribbon graphic. On the left, a 'Naughty Nutcracker' cookie (dark, spicy molasses). On the right, an 'Angel's Kiss' cookie (light, powdered sugar-dusted meringue). Centered, slightly overlapping the ribbon, is 'Santa's Secret Stash' (a decadent double fudge cookie). \n\nTEXT (Header, playful cursive font): Which list are you on? \n\nTEXT (Body, clean modern font): Doesn't matter. There's a cookie for that. But not for long... \n\nLOGO: Doughpocalypse Bakery logo at the bottom center.",
+        "tagline": "Good things come to those who don't wait.",
+        "product": "Doughpocalypse Bakery",
+        "size": "1080x1080",
+        "assets": {
+            "styling": {
+                "background": {
+                    "type": "color",
+                    "value": "#F5F5DC"
+                },
+                "fonts": {
+                    "headline": {
+                        "color": "#8B0000",
+                        "align": "center"
+                    },
+                    "body": {
+                        "color": "#36454F",
+                        "align": "center"
+                    },
+                    "cta": {
+                        "color": "#8B0000",
+                        "align": "center"
+                    }
+                },
+                "layout": {
+                    "headline": {
+                        "x": 0.5,
+                        "y": 0.15
+                    },
+                    "body": {
+                        "x": 0.5,
+                        "y": 0.65
+                    },
+                    "cta": {
+                        "x": 0.5,
+                        "y": 0.85
+                    }
+                }
+            },
+            "texts": [
+                {
+                    "id": "headline",
+                    "text": "Which list are you on?"
+                },
+                {
+                    "id": "body",
+                    "text": "Doesn't matter. There's a cookie for that. But not for long..."
+                },
+                {
+                    "id": "cta",
+                    "text": "Good things come to those who don't wait."
+                }
+            ],
+            "images": [
+                {
+                    "id": "red_ribbon_graphic",
+                    "desc": "A very thin, playful red ribbon graphic, splitting the poster horizontally across the middle.",
+                    "path": "generated_images\\red_ribbon_graphic.png"
+                },
+                {
+                    "id": "naughty_nutcracker_cookie",
+                    "desc": "A dark, spicy molasses 'Naughty Nutcracker' cookie, positioned on the left side of the ribbon.",
+                    "path": "generated_images\\naughty_nutcracker_cookie.png"
+                },
+                {
+                    "id": "angels_kiss_cookie",
+                    "desc": "A light, powdered sugar-dusted meringue 'Angel's Kiss' cookie, positioned on the right side of the ribbon.",
+                    "path": "generated_images\\angels_kiss_cookie.png"
+                },
+                {
+                    "id": "santas_secret_stash_cookie",
+                    "desc": "A decadent double fudge 'Santa's Secret Stash' cookie, centered and slightly overlapping the red ribbon.",
+                    "path": "generated_images\\santas_secret_stash_cookie.png"
+                },
+                {
+                    "id": "doughpocalypse_logo",
+                    "desc": "Doughpocalypse Bakery logo, placed at the bottom center of the poster.",
+                    "path": "generated_images\\doughpocalypse_logo.png"
+                }
+            ]
+        }
+    },
+    "3": {
+        "id": 3,
+        "title": "Your Official Holiday Reward",
+        "script": "VISUAL: A high-end, editorial-style photo. A single 'Golden Spiced Snickerdoodle' has a perfect bite taken out, revealing a soft interior. A few edible gold flakes shimmer on top. The background is soft-focus, suggesting a cozy fireplace. \n\nTEXT (Header, layered elegantly over the image): You untangled the lights. You survived the mall. You've earned this. \n\nTEXT (Body, smaller font at the bottom): Our holiday collection has arrived. This moment of peace is fleeting. So are the cookies. \n\nLOGO: Doughpocalypse Bakery logo placed discreetly at the bottom.",
+        "tagline": "The season's most deserved indulgence.",
+        "product": "Doughpocalypse Bakery",
+        "size": "1080x1080"
+    }
+}
