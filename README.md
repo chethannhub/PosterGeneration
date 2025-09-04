@@ -85,8 +85,13 @@ Invoke-RestMethod -Uri 'http://127.0.0.1:5000/api/generatePoster' -Method Post -
 On success the endpoint returns `poster_dir` and `script_path`. The Unity Editor script is saved under your Unity project (see `generate_poster.py` for `CS_FILE_PATH`). Unity is invoked in batch mode to run `PosterGenerator.GeneratePoster` which should render and save a PNG into `posters/`.
 
 Unity setup notes
-- Ensure Unity 2022.3 LTS is installed and the `UNITY_PATH` and `PROJECT_PATH` constants in `generate_poster.py` point to the correct Unity Editor path and your Unity project location.
+- Ensure Unity 2022.3.47 LTS is installed and project setuped with 2D Universal render pipeline
+- The `UNITY_PATH` and `PROJECT_PATH` constants in `generate_poster.py` point to the correct Unity Editor path and your Unity project location.
 - The code expects a Unity project at `PROJECT_PATH` with `Assets/Editor/` writable — the script saves `PosterGenerator.cs` there.
-- Text rendering uses TextMeshPro (the generated script uses `TextMeshProUGUI`). Make sure TextMeshPro is available in the project (Package Manager).
+- Text rendering uses TextMeshPro (the generated script uses `TextMeshProUGUI`). Make sure TextMeshPro is available in the project (Install thourgh Package Manager).
 - Headless rendering requires the Unity project to be able to render in batch mode without manual setup; test once from Editor to iterate quickly.
+
+
+
+
 
