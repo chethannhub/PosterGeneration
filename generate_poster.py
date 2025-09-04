@@ -7,8 +7,12 @@ from google.genai import types, errors
 from utils import load_scripts, save_scripts, IMAGES_DIR, POSTER_DIR
 
 MODEL = os.getenv("MODEL")
-UNITY_PATH = r"C:\Program Files\Unity\Hub\Editor\2022.3.47f1\Editor\Unity.exe"
-PROJECT_PATH = r"D:\unity2D"
+
+# Read Unity paths from environment with sensible defaults
+UNITY_PATH = os.getenv("UNITY_PATH", r"C:\Program Files\Unity\Hub\Editor\2022.3.47f1\Editor\Unity.exe")
+PROJECT_PATH = os.getenv("PROJECT_PATH", r"D:\Learn_unity\AdTemplate2D")
+
+# Derived file paths inside the Unity project
 CS_FILE_PATH = os.path.join(PROJECT_PATH, "Assets", "Editor", "PosterGenerator.cs")
 LOG_FILE = os.path.join(PROJECT_PATH, "editor_log.txt")
 
@@ -49,6 +53,7 @@ Generate a complete Unity C# script named PosterGenerator with method GeneratePo
 Use only Unity 2022.3 LTS compatible APIs. No GUI functions. Provide only C# code.
 """
     
+    # Log the prompt here so we can reproduce LLM outputs during debugging.
     print("[DEBUG] LLM Prompt:\n", prompt)
     
     try:
@@ -126,11 +131,12 @@ Provide only working C# code.
         if "using UnityEngine" not in cs_code:
             cs_code = "using UnityEngine;\nusing UnityEditor;\nusing System.IO;\nusing TMPro;\n\n" + cs_code
         
-        # Save to Unity project
+        # Save the generated/fixed C# script into the Unity project's
+        # Assets/Editor folder so Unity can compile and run it in batch mode.
         os.makedirs(os.path.dirname(CS_FILE_PATH), exist_ok=True)
         with open(CS_FILE_PATH, "w", encoding="utf-8") as f:
             f.write(cs_code)
-        
+
         print(f"[DEBUG] Unity C# script saved at: {CS_FILE_PATH}")
         return CS_FILE_PATH
         

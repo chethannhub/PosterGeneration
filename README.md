@@ -1,11 +1,12 @@
 ## PosterGeneration — 2D Ad Template Generator
 
-A backend tool that uses GenAI + Unity to automatically create 2D ad/poster samples from a short product or brand description. The system generates ad copy (scripts), text-free visual assets, and a Unity editor script that composes a final poster in batch mode.
+A backend tool that uses GenAI + Unity to automatically create 2D ad/poster samples from a short product or brand description to achive deterministic.
 
-Key ideas
-- Input: short product/brand description and size (e.g., 1080x1350)
-- Output: multiple script variants, generated images (no embedded text), and rendered posters
-- Components: Flask API (Python) + GenAI models for text and images + Unity Editor script for final rendering
+Key features
+- Generate 3 distinct script/creative directions from a single short brief.
+- Produce text-free image assets and a layout plan using GenAI.
+- Emit a Unity C# Editor script and run Unity in batch mode to render PNG posters.
+- Built for reproducibility: deterministic prompts and saved specs allow reliable re-runs.
 
 Repository layout (important files/directories)
 - `app.py` — Flask app exposing API endpoints
@@ -13,9 +14,7 @@ Repository layout (important files/directories)
 - `generate_assets_api.py` — uses LLM to produce layout + image prompts, generates text-free images into `generated_images/`
 - `generate_poster.py` — uses LLM to produce a Unity C# editor script, saves it to the Unity project, then runs Unity in batch mode to render posters into `posters/`
 - `utils.py` — helper functions and path constants
-- `specs/` — stores `scripts_data.json` (whitelisted in `.gitignore` so it's tracked)
-- `generated_images/` — generated image files (ignored by git by default)
-- `posters/` — rendered poster outputs (ignored by git by default)
+
 
 Prerequisites
 - Python 3.10+ (Windows)
@@ -91,21 +90,3 @@ Unity setup notes
 - Text rendering uses TextMeshPro (the generated script uses `TextMeshProUGUI`). Make sure TextMeshPro is available in the project (Package Manager).
 - Headless rendering requires the Unity project to be able to render in batch mode without manual setup; test once from Editor to iterate quickly.
 
-Security and best practices
-- Do not commit your API keys. Use environment variables or a secrets manager.
-- Large generated assets are ignored by default in `.gitignore` (`generated_images/`, `posters/`) to avoid bloating the repo.
-
-Troubleshooting
-- If `createScripts` returns invalid JSON, check logs printed by the Flask app — the LLM output is printed to stdout for debugging.
-- If `generateAssets` fails to write images, confirm `IMAGE_MODEL` is set and the GenAI image response contains binary data (the code expects inline image bytes).
-- If Unity batch mode fails, inspect the Unity `editor_log.txt` defined in `generate_poster.py` and run Unity Editor manually to iterate on the generated `PosterGenerator.cs` script.
-
-Extending the project
-- Add a basic `web` frontend to call the endpoints and preview posters.
-- Add validation and more robust storage for generated assets (S3 or similar) for multi-user scaling.
-
-License
-- Add your preferred license file (e.g., `LICENSE`) to the repository.
-
-If you'd like, I can also:
-- Create a small `requirements.txt` and a sample PowerShell script to automate a typical workflow.

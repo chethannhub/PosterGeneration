@@ -11,6 +11,8 @@ app = Flask(__name__)
 
 # Initialize Gemini client
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+# GEMINI_API_KEY is required to authenticate with the GenAI client. Keep this
+# value out of source control (use .env or a secrets manager in production).
 if not GEMINI_API_KEY:
     raise RuntimeError("GEMINI_API_KEY must be set in environment variables")
 
@@ -19,18 +21,31 @@ print("=== Gemini Client Initialized ===")
 
 @app.route("/api/createScripts", methods=["POST"])
 def create_scripts_api_route():
-    """Fixed: Call the function directly"""
+    """API: create 3 script variants for a brief.
+
+    Delegates to `create_scripts` which calls the LLM and persists results.
+    The handler passes the GenAI `client` to avoid re-initializing inside the
+    module and to keep authentication centralized here.
+    """
     print("Scripts API called")
     return create_scripts(client)  # Direct call, not nested function
 
 @app.route("/api/generateAssets", methods=["POST"])  
 def generate_assets_api_route():
-    """Fixed: Call the function directly"""
+    """API: Generate layout + text-free images for a script id.
+
+    Important: this endpoint expects a script (created by createScripts) to
+    already exist. It will update `specs/scripts_data.json` with an `assets`
+    section containing layout, styling and generated image paths.
+    """
     print("Assets API called")
     return generate_assets(client)  # Direct call, not nested function
 
 @app.route("/api/generatePoster", methods=["POST"])
 def generate_poster_api():
+    # This endpoint orchestrates Unity script generation and a headless Unity
+    # run. It returns the poster directory and path to the generated C# script
+    # on success. Unity must be reachable on PATH or via the UNITY_PATH env var.
     print("Poster API called")
     
     data = request.json
