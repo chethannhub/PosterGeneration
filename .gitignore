@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+*.log
+
+# Project-specific generated outputs
+!generated_images/
+!posters/
+!tmp/
+
+!specs/
+

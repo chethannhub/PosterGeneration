@@ -1,85 +1,81 @@
-#app.py
-
 import os
 from google import genai
-from flask import Flask
 from flask import Flask, request, jsonify
-from predefine_generate_poster import build_layout_and_assets, run_unity_with_spec
-from utils import POSTER_DIR, load_scripts
+
+from utils import POSTER_DIR, load_scripts  
 from create_scripts_api import create_scripts
 from generate_assets_api import generate_assets
 from generate_poster import generate_unity_script, run_unity_batch
 
-
 app = Flask(__name__)
 
-# --- Gemini Client ---
+# Initialize Gemini client
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
     raise RuntimeError("GEMINI_API_KEY must be set in environment variables")
 
 client = genai.Client(api_key=GEMINI_API_KEY)
+print("=== Gemini Client Initialized ===")
 
-# --- API Routes ---
 @app.route("/api/createScripts", methods=["POST"])
 def create_scripts_api_route():
-    print("\nCreate Scripts API called\n")
-    return create_scripts(client)()
+    """Fixed: Call the function directly"""
+    print("Scripts API called")
+    return create_scripts(client)  # Direct call, not nested function
 
-@app.route("/api/generateAssets", methods=["POST"])
+@app.route("/api/generateAssets", methods=["POST"])  
 def generate_assets_api_route():
-    print("\nGenerate Assets API called\n")
-    return generate_assets(client)()
-
-
+    """Fixed: Call the function directly"""
+    print("Assets API called")
+    return generate_assets(client)  # Direct call, not nested function
 
 @app.route("/api/generatePoster", methods=["POST"])
 def generate_poster_api():
-    print("\nGenerate poster api called\n")
+    print("Poster API called")
+    
     data = request.json
     script_id = data.get("id")
-    SCRIPTS = load_scripts()
-
-    if script_id not in SCRIPTS:
-        return jsonify({"error": "Invalid script ID"}), 400
-
-    cs_path = generate_unity_script(client, SCRIPTS[script_id])
-
-    success = run_unity_batch()
-    if success:
-        return jsonify({"status": "Poster generated successfully", "cs_file": cs_path})
-    else:
-        return jsonify({"status": "Failed to generate poster, check Unity logs", "cs_file": cs_path}), 500
-
-@app.route("/api/predefineGeneratePoster", methods=["POST"])
-def build_poster():
+    
+    scripts = load_scripts()
+    if script_id not in scripts:
+        return jsonify({
+            "error": "Invalid script ID", 
+            "available": list(scripts.keys())
+        }), 400
+    
+    script_data = scripts[script_id]
+    
+    # Check if assets exist
+    if "assets" not in script_data:
+        return jsonify({
+            "error": "No assets found. Generate assets first."
+        }), 400
+    
     try:
-        scripts = load_scripts()  
+        # Generate Unity script with layout positioning
+        cs_file_path = generate_unity_script(client, script_data)
+        print(f"[DEBUG] Unity script generated: {cs_file_path}")
         
-        scripts = {str(k): v for k, v in scripts.items()}
+        # Run Unity in batch mode
+        success = run_unity_batch()
         
-        data = request.get_json(force=True)
-        script_id = str(data.get("id"))
-
-        if script_id not in scripts:
-            return jsonify({"status": "error", "msg": "Invalid script ID"}), 400
-
-        script_info = scripts[script_id]
-
-        poster_name = f"poster_{script_id}.png"
-        poster_out_path = os.path.join(POSTER_DIR, poster_name)
-
-        spec = build_layout_and_assets(script_info, poster_out_path, tmp_dir=os.path.join(POSTER_DIR, "tmp"))
-
-        success = run_unity_with_spec(spec)
-
-        if not success:
-            return jsonify({"status": "error", "msg": "Unity failed"}), 500
-
-        return jsonify({"status": "ok", "poster": poster_out_path})
-
+        if success:
+            return jsonify({
+                "success": True,
+                "message": "Poster generated successfully",
+                "poster_dir": POSTER_DIR,
+                "script_path": cs_file_path
+            })
+        else:
+            return jsonify({
+                "error": "Unity batch execution failed",
+                "poster_dir": POSTER_DIR
+            }), 500
+            
     except Exception as e:
-        return jsonify({"status": "error", "msg": str(e)}), 500
+        return jsonify({
+            "error": f"Failed to generate poster: {str(e)}"
+        }), 500
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(debug=True)
